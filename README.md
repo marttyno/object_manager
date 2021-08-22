@@ -1,8 +1,8 @@
 # Object Manager
 
-Spent time: About 24h, maybe more
-Technologies: Visual Studio 2019, CMake, PlantUml
-Info for task: It's chaotic task for me. I don't know what it's exactly expected result.
+* Spent time: About 24h, maybe more
+* Technologies: Visual Studio 2019, CMake, PlantUml
+* Info for task: It's chaotic task for me. I don't know what it's exactly expected result.
 
 ## UML
 
