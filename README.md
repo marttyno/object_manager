@@ -1,2 +1,71 @@
-# object_manager
-Generic object manager can contain many objects
+# Object Manager
+
+Spent time: About 24h, maybe more
+
+## UML
+
+```plantuml
+@startuml
+
+class Object <<(C,LightGreen)>>
+{
+    {field} - _id: std::uint16_t
+    {field} - _manager: ObjectManager*
+
+    {method} + Object(std::uint16_t id, ObjectManager* manager)
+    {method} + virtual ~Object()
+    {method} + virtual void Update() = 0
+}
+abstract class Object
+
+class EntityAction <<(C,LightGreen)>>
+{
+    {field} - _visible: bool
+
+    {method} + EntityAction(std::uint16_t id, EntityActionManager* manager)
+    {method} + ~EntityAction() override
+    {method} + virtual bool CanBeVisible() const
+    {method} + void Update() override
+}
+
+class ObjectManager <<(C,LightGreen)>>
+{
+    {field} - _objects: std::list<Object>
+
+    {method} + ObjectManager()
+    {method} + virtual ~ObjectManager()
+    {method} + void Attach(Object* obj)
+    {method} + void Detach(Object* obj)
+    {method} + void Notify()
+}
+
+class EntityActionManager <<(C,LightGreen)>>
+{
+    {field} - _entityActions: std::list<EntityAction>
+
+    {method} + EntityActionManager()
+    {method} + ~EntityActionManager() override
+    {method} + void AddAction(std::uint16_t actionId)
+    {method} + std::list<const EntityAction*> GetVisibleActions() const
+}
+
+class Entity <<(C,LightGreen)>>
+{
+    {field} - _entityId: std::uint16_t
+    {field} - _manager: EntityActionManager
+
+    {method} + Entity(std::uint16_t entityId, std::uint16_t entityActionsCount)
+    {method} + ~Entity()
+    {method} + void Update()
+}
+Object <|-- EntityAction
+ObjectManager <|-- EntityActionManager
+
+Entity --> "1" EntityActionManager : has >
+EntityActionManager -->"0..N" EntityAction : have >
+
+ObjectManager -->"0..N" Object : have >
+Object --> "1" ObjectManager : has >
+
+@enduml
+```
